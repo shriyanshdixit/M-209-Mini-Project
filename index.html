@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MBA M209 Mini Project – Poster v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,600;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --lime: #C8FF00;
+    --pink: #FF2D78;
+    --dark: #080808;
+    --cream: #F5F0E8;
+    --blue: #00D4FF;
+    --orange: #FF6B00;
+    --purple: #BF5FFF;
+  }
+  body {
+    background: #0D0D0D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'DM Sans', sans-serif;
+    padding: 24px;
+  }
+  .poster {
+    width: 700px;
+    background: var(--dark);
+    position: relative;
+    overflow: hidden;
+    border: 2.5px solid var(--lime);
+    box-shadow: 0 0 80px rgba(200,255,0,0.25), 0 0 160px rgba(255,45,120,0.1);
+  }
+
+  /* GRID BG */
+  .grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 36px 36px;
+    z-index: 1;
+  }
+
+  /* NOISE */
+  .poster::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 10; opacity: 0.35;
+  }
+
+  /* GLOW ORBS */
+  .orb {
+    position: absolute; border-radius: 50%; filter: blur(60px); z-index: 2; pointer-events: none;
+  }
+  .orb1 { width: 260px; height: 260px; background: rgba(200,255,0,0.07); top: -80px; right: -60px; }
+  .orb2 { width: 200px; height: 200px; background: rgba(255,45,120,0.06); bottom: 100px; left: -60px; }
+  .orb3 { width: 150px; height: 150px; background: rgba(0,212,255,0.05); bottom: -40px; right: 60px; }
+
+  /* ──── HEADER BAND ──── */
+  .header-band {
+    background: var(--lime);
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; z-index: 5;
+  }
+  .header-band-left {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .header-band-right {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--dark);
+    letter-spacing: 0.15em;
+  }
+
+  /* SCROLLING TICKER */
+  .ticker-wrap {
+    background: var(--pink);
+    overflow: hidden;
+    position: relative; z-index: 5;
+    padding: 7px 0;
+    border-top: 1px solid rgba(255,255,255,0.15);
+  }
+  .ticker {
+    display: flex;
+    white-space: nowrap;
+    animation: ticker 18s linear infinite;
+  }
+  .ticker-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding-right: 52px;
+    flex-shrink: 0;
+  }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ──── HERO ──── */
+  .hero {
+    padding: 32px 28px 0;
+    position: relative; z-index: 3;
+  }
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+  }
+  .eyebrow-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--orange);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    border: 1px solid var(--orange);
+    padding: 4px 10px;
+  }
+  .eyebrow-blink {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--lime);
+    letter-spacing: 0.2em;
+    animation: blink 1.4s steps(1) infinite;
+  }
+  @keyframes blink { 0%,49%{opacity:1}50%,100%{opacity:0} }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    line-height: 0.85;
+    letter-spacing: -0.01em;
+  }
+  .ht-lg { font-size: 118px; color: var(--cream); }
+  .ht-accent { color: var(--lime); }
+  .ht-pink { color: var(--pink); }
+  .ht-sm { font-size: 52px; color: rgba(245,240,232,0.35); }
+  .ht-sub {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--blue);
+    letter-spacing: 0.05em;
+    margin-top: 6px;
+  }
+
+  /* badge row */
+  .badge-row {
+    display: flex; gap: 10px; margin-top: 20px; align-items: center; flex-wrap: wrap;
+  }
+  .badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    padding: 7px 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .badge-lime { background: var(--lime); color: var(--dark); box-shadow: 3px 3px 0 var(--pink); transform: rotate(-1deg); }
+  .badge-outline { border: 1.5px solid rgba(245,240,232,0.2); color: rgba(245,240,232,0.5); }
+
+  /* ──── DIVIDER ──── */
+  .divider {
+    height: 1.5px;
+    background: linear-gradient(90deg, var(--lime) 0%, var(--pink) 40%, var(--blue) 70%, transparent 100%);
+    margin: 26px 28px 0;
+    position: relative; z-index: 3;
+  }
+
+  /* ──── WHAT YOU GET ──── */
+  .section { padding: 22px 28px 0; position: relative; z-index: 3; }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--lime);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .bc {
+    border: 1.5px solid rgba(255,255,255,0.07);
+    padding: 13px 15px 13px 18px;
+    position: relative;
+    background: rgba(255,255,255,0.025);
+    transition: background 0.2s;
+  }
+  .bc:hover { background: rgba(255,255,255,0.05); }
+  .bc::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; width: 3px; height: 100%;
+  }
+  .bc:nth-child(1)::before { background: var(--lime); }
+  .bc:nth-child(2)::before { background: var(--pink); }
+  .bc:nth-child(3)::before { background: var(--blue); }
+  .bc:nth-child(4)::before { background: var(--orange); }
+  .bc:nth-child(5)::before { background: var(--purple); }
+  .bc:nth-child(6)::before { background: var(--lime); }
+
+  .bc-top { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .bc-emoji { font-size: 17px; }
+  .bc-head {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800; font-size: 12px;
+    color: var(--cream);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .bc-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: rgba(245,240,232,0.5);
+    line-height: 1.55;
+    padding-left: 25px;
+  }
+
+  /* ──── PROOF BAR ──── */
+  .proof-bar {
+    margin: 22px 28px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border: 1.5px solid rgba(200,255,0,0.2);
+    position: relative; z-index: 3;
+  }
+  .proof-item {
+    padding: 14px 16px;
+    text-align: center;
+    border-right: 1px solid rgba(200,255,0,0.12);
+  }
+  .proof-item:last-child { border-right: none; }
+  .proof-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    color: var(--lime);
+    line-height: 1;
+  }
+  .proof-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: rgba(245,240,232,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+  }
+
+  /* ──── DEADLINE BANNER ──── */
+  .deadline-banner {
+    margin: 18px 28px 0;
+    background: rgba(255,45,120,0.1);
+    border: 1.5px dashed var(--pink);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative; z-index: 3;
+  }
+  .dl-icon { font-size: 28px; flex-shrink: 0; }
+  .dl-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: rgba(245,240,232,0.9);
+    line-height: 1.7;
+    letter-spacing: 0.03em;
+  }
+  .dl-text strong { color: var(--pink); font-size: 13px; }
+  .dl-text em { color: var(--lime); font-style: normal; }
+
+  /* ──── CTA ROW ──── */
+  .cta-row {
+    margin: 18px 28px 0;
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+    position: relative; z-index: 3;
+  }
+  .cta-btn {
+    background: var(--lime);
+    color: var(--dark);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    padding: 14px 26px;
+    box-shadow: 4px 4px 0 var(--pink);
+    cursor: pointer;
+    border: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+    text-decoration: none; display: flex; align-items: center;
+    white-space: nowrap;
+  }
+  .cta-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--pink); }
+  .cta-btn2 {
+    background: transparent;
+    color: var(--blue);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    padding: 14px 22px;
+    border: 1.5px solid var(--blue);
+    cursor: pointer;
+    transition: background 0.2s;
+    text-decoration: none; display: flex; align-items: center;
+    white-space: nowrap;
+  }
+  .cta-btn2:hover { background: rgba(0,212,255,0.08); }
+
+  /* ──── CONTACT CARD ──── */
+  .contact-card {
+    margin: 14px 28px 0;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 14px 18px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    position: relative; z-index: 3;
+  }
+  .contact-item {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .contact-icon { font-size: 16px; }
+  .contact-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--cream);
+    letter-spacing: 0.05em;
+  }
+  .contact-platform {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: rgba(245,240,232,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 2px;
+  }
+  .contact-sep {
+    width: 1px; height: 36px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  /* ──── FOOTER ──── */
+  .poster-footer {
+    margin-top: 18px;
+    padding: 12px 28px 18px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; z-index: 3;
+  }
+  .footer-left {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: rgba(245,240,232,0.2);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    line-height: 1.8;
+  }
+  .footer-tags {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: rgba(245,240,232,0.2);
+    text-align: right;
+    line-height: 1.8;
+    letter-spacing: 0.05em;
+  }
+  .footer-tags span { color: var(--lime); }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="grid-bg"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <!-- TOP BAND -->
+  <div class="header-band">
+    <div class="header-band-left">📁 S.S. Jain Subodh Management Institute · MBA Sem II</div>
+    <div class="header-band-right">Paper No. M-209</div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span class="ticker-item">MINI PROJECT FILE &nbsp;✦&nbsp; RESEARCH-BACKED CONTENT &nbsp;✦&nbsp; 40+ PAGE REPORTS &nbsp;✦&nbsp; CHAPTERS + BIBLIOGRAPHY &nbsp;✦&nbsp; MARKET DATA & ANALYSIS &nbsp;✦&nbsp; GLOBAL & INDIAN SCENARIO &nbsp;✦&nbsp; EXECUTIVE SUMMARY INCLUDED &nbsp;✦&nbsp;</span>
+      <span class="ticker-item">MINI PROJECT FILE &nbsp;✦&nbsp; RESEARCH-BACKED CONTENT &nbsp;✦&nbsp; 40+ PAGE REPORTS &nbsp;✦&nbsp; CHAPTERS + BIBLIOGRAPHY &nbsp;✦&nbsp; MARKET DATA & ANALYSIS &nbsp;✦&nbsp; GLOBAL & INDIAN SCENARIO &nbsp;✦&nbsp; EXECUTIVE SUMMARY INCLUDED &nbsp;✦&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <div class="eyebrow-tag">✦ Your semester is sorted</div>
+      <div class="eyebrow-blink">● OPEN NOW</div>
+    </div>
+    <div class="hero-title">
+      <div class="ht-lg"><span class="ht-accent">MINI</span> <span class="ht-pink">PRO</span>JECT</div>
+      <div class="ht-sm">File. Done. Delivered.</div>
+    </div>
+    <div class="ht-sub">No cap. Full research. Proper format. 🔥</div>
+
+    <div class="badge-row">
+      <div class="badge badge-lime">MBA · M209 · Mini Project File</div>
+      <div class="badge badge-outline">Proper Format & Structure</div>
+      <div class="badge badge-outline">2025–26</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- BENEFITS -->
+  <div class="section">
+    <div class="section-label">✦ what's actually inside (fr fr)</div>
+    <div class="benefits-grid">
+
+      <div class="bc">
+        <div class="bc-top"><span class="bc-emoji">📋</span><div class="bc-head">Full 5-Chapter Structure</div></div>
+        <div class="bc-desc">Intro → Industry Overview → Emerging Tech → Future & Challenges → Conclusion. Exactly as required.</div>
+      </div>
+
+      <div class="bc">
+        <div class="bc-top"><span class="bc-emoji">📊</span><div class="bc-head">Real Data & Market Stats</div></div>
+        <div class="bc-desc">Actual market figures, CAGR data, global & Indian scenario — not copy-paste Wikipedia stuff.</div>
+      </div>
+
+      <div class="bc">
+        <div class="bc-top"><span class="bc-emoji">🌍</span><div class="bc-head">Global + Indian Scenario</div></div>
+        <div class="bc-desc">Covers world market leaders AND Indian players specifically — the way professors actually want it.</div>
+      </div>
+
+      <div class="bc">
+        <div class="bc-top"><span class="bc-emoji">🤖</span><div class="bc-head">Emerging Tech Deep Dive</div></div>
+        <div class="bc-desc">AI, ML, Blockchain, AR/VR, Big Data, IoT, RPA — covered with actual applications and case studies.</div>
+      </div>
+
+      <div class="bc">
+        <div class="bc-top"><span class="bc-emoji">✅</span><div class="bc-head">All Formalities Included</div></div>
+        <div class="bc-desc">Cover page, Certificate, Student Declaration, Acknowledgement, Index, Bibliography — all done.</div>
+      </div>
+
+      <div class="bc">
+        <div class="bc-top"><span class="bc-emoji">🎯</span><div class="bc-head">Submission Ready File</div></div>
+        <div class="bc-desc">Properly formatted, neatly structured. Just add your name & roll number and walk in confidently.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PROOF BAR -->
+  <div class="proof-bar">
+    <div class="proof-item">
+      <div class="proof-num">40+</div>
+      <div class="proof-label">Pages per file</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-num">5</div>
+      <div class="proof-label">Full chapters</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-num">AI</div>
+      <div class="proof-label">Assisted & structured</div>
+    </div>
+  </div>
+
+  <!-- DEADLINE BANNER -->
+  <div class="deadline-banner">
+    <div class="dl-icon">⏰</div>
+    <div class="dl-text">
+      <strong>Stock is UNLIMITED — but your deadline is NOT.</strong><br>
+      DM now before it's too late. <em>No panic orders after the last minute.</em>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-row">
+    <a href="tel:9461449957" class="cta-btn">📞 CALL / WHATSAPP →</a>
+    <a href="https://instagram.com/shriyansh_dixit" class="cta-btn2">📸 DM ON IG →</a>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="contact-card">
+    <div class="contact-item">
+      <div class="contact-icon">📱</div>
+      <div>
+        <div class="contact-platform">WhatsApp / Call</div>
+        <div class="contact-val">94614 49957</div>
+      </div>
+    </div>
+    <div class="contact-sep"></div>
+    <div class="contact-item">
+      <div class="contact-icon">📸</div>
+      <div>
+        <div class="contact-platform">Instagram</div>
+        <div class="contact-val">@shriyansh_dixit</div>
+      </div>
+    </div>
+    <div class="contact-sep"></div>
+    <div class="contact-item">
+      <div class="contact-icon">🏫</div>
+      <div>
+        <div class="contact-platform">College</div>
+        <div class="contact-val">SSJSMI · MBA Sem II</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="poster-footer">
+    <div class="footer-left">
+      AI-assisted, well-structured,<br>properly formatted & ready to submit 🤖✅
+    </div>
+    <div class="footer-tags">
+      <span>#MBALife</span> &nbsp;#M209 &nbsp;#MiniProject<br>
+      <span>#SSJSMI</span> &nbsp;#SemesterSurvivor &nbsp;#Jaipur
+    </div>
+  </div>
+</div>
+</body>
+</html>
